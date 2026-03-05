@@ -8,6 +8,12 @@ pipeline {
 
     stages {
 
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
@@ -21,7 +27,7 @@ pipeline {
                     aws s3 sync . s3://$S3_BUCKET \
                     --region $AWS_REGION \
                     --delete \
-                    --exclude ".git/*" \
+                    --exclude ".git" \
                     --exclude "Jenkinsfile" \
                     --exclude "README.md" \
                     --exclude "lambda_cloudfront.py" \
